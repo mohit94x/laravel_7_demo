@@ -69,37 +69,41 @@
                 <a href="{{ route('blog.index') }}">Blogs</a>
                 <a href="{{ route('blog.create') }}">Blog from</a>
             </div>
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    <a href="{{ route('blog.index') }}">Blog from</a>
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
 
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
-                    @endauth
-                </div>
-            @endif
+            <table style="width:50% ;" border="1">
+                <thead>
+                    <tr>
+                        <td>Sn</td>
+                        <td>name</td>
+                        <td>Image</td>
+                        <td>action</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($aData as $key => $item)
+                    <tr>
+                        <td>{{++$key}}</td>
+                        <td>{{$item->name}}</td>
+                        <td>
+                            @if ($item->image)
+                            {{$item->image}}
+                            <img src="{{asset('public/storege/images/'.$item->image)}}" alt="" srcset="">
+                            @endif
+                        </td>
+                        <td>
+                            <form action="{{route('blog.destroy',$item->id)}}" method="post">
+                            @csrf
+                            @method('delete')
+                            <button type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
 
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
+            </table>
 
-                <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://vapor.laravel.com">Vapor</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
-            </div>
+
         </div>
     </body>
 </html>
